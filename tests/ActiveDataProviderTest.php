@@ -5,8 +5,8 @@ namespace yii\elasticsearch\tests;
 use yii\elasticsearch\ActiveDataProvider;
 use yii\elasticsearch\Connection;
 use yii\elasticsearch\Query;
-use yiiunit\extensions\elasticsearch\data\ar\ActiveRecord;
-use yiiunit\extensions\elasticsearch\data\ar\Customer;
+use yii\elasticsearch\tests\data\ar\ActiveRecord;
+use yii\elasticsearch\tests\data\ar\Customer;
 
 class ActiveDataProviderTest extends TestCase
 {
@@ -51,40 +51,26 @@ class ActiveDataProviderTest extends TestCase
         $query = new Query();
         $query->from('yiitest', 'customer');
 
-        $provider = new ActiveDataProvider([
-            'query' => $query,
-            'db' => $this->getConnection(),
-        ]);
+        $provider = new ActiveDataProvider($this->getConnection(), $query);
         $models = $provider->getModels();
         $this->assertEquals(3, count($models));
 
-        $provider = new ActiveDataProvider([
-            'query' => $query,
-            'db' => $this->getConnection(),
-            'pagination' => [
-                'pageSize' => 1,
-            ]
-        ]);
+        $provider = new ActiveDataProvider($this->getConnection(), $query);
+        $provider->pagination = ['pageSize' => 1];
         $models = $provider->getModels();
         $this->assertEquals(1, count($models));
     }
 
     public function testActiveQuery()
     {
-        $provider = new ActiveDataProvider([
-            'query' => Customer::find(),
-        ]);
+        $provider = new ActiveDataProvider($this->getConnection() ,Customer::find());
         $models = $provider->getModels();
         $this->assertEquals(3, count($models));
         $this->assertTrue($models[0] instanceof Customer);
         $this->assertTrue($models[1] instanceof Customer);
 
-        $provider = new ActiveDataProvider([
-            'query' => Customer::find(),
-            'pagination' => [
-                'pageSize' => 1,
-            ]
-        ]);
+        $provider = new ActiveDataProvider($this->getConnection(), Customer::find());
+        $provider->pagination = ['pageSize' => 1];
         $models = $provider->getModels();
         $this->assertEquals(1, count($models));
     }

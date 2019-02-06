@@ -10,6 +10,8 @@ namespace yii\elasticsearch;
 use yii\base\Component;
 use yii\base\InvalidCallException;
 use yii\helpers\Json;
+use yii\helpers\Yii;
+use yii\db\ConnectionInterface;
 
 /**
  * The Command class implements the API for accessing the elasticsearch REST API.
@@ -44,6 +46,12 @@ class Command extends Component
      */
     public $options = [];
 
+
+    public function __construct(ConnectionInterface $db = null, array $config = [])
+    {
+        $this->db = $db ?? Yii::getApp()->db;
+        \yii\di\AbstractContainer::configure($this, $config);
+    }
 
     /**
      * Sends a request to the _search API and returns the result

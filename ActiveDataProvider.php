@@ -25,7 +25,7 @@ use yii\db\ActiveQueryInterface;
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 2.0.5
  */
-class ActiveDataProvider extends \yii\data\ActiveDataProvider
+class ActiveDataProvider extends \yii\activerecord\data\ActiveDataProvider
 {
     /**
      * @var array the full query results.

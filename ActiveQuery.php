@@ -7,9 +7,9 @@
 
 namespace yii\elasticsearch;
 
-use yii\db\ActiveQueryInterface;
-use yii\db\ActiveQueryTrait;
-use yii\db\ActiveRelationTrait;
+use yii\activerecord\ActiveQueryInterface;
+use yii\activerecord\ActiveQueryTrait;
+use yii\activerecord\ActiveRelationTrait;
 
 /**
  * ActiveQuery represents a [[Query]] associated with an [[ActiveRecord]] class.

@@ -45,8 +45,8 @@ abstract class TestCase extends \yii\tests\TestCase
      */
     protected function destroyApplication()
     {
-        Yii::$app = null;
-        Yii::$container = new Container();
+        $this->container->set('app', null);
+        //Yii::$container = new Container();
     }
 
     protected function setUp()

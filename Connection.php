@@ -7,11 +7,12 @@
 
 namespace yii\elasticsearch;
 
-use Yii;
+use yii\helpers\Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
 use yii\helpers\Json;
+use yii\db\ConnectionInterface;
 
 /**
  * elasticsearch Connection is used to connect to an elasticsearch cluster version 0.20 or higher
@@ -23,7 +24,7 @@ use yii\helpers\Json;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class Connection extends Component
+class Connection extends Component implements ConnectionInterface
 {
     /**
      * @event Event an event that is triggered after a DB connection is established
@@ -155,7 +156,7 @@ class Connection extends Component
             $this->populateNodes();
         }
         $this->selectActiveNode();
-        Yii::trace('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
+        Yii::debug('Opening connection to elasticsearch. Nodes in cluster: ' . count($this->nodes)
             . ', active node: ' . $this->nodes[$this->activeNode]['http_address'], __CLASS__);
         $this->initConnection();
     }
@@ -219,7 +220,7 @@ class Connection extends Component
         if ($this->activeNode === null) {
             return;
         }
-        Yii::trace('Closing connection to elasticsearch. Active node was: '
+        Yii::debug('Closing connection to elasticsearch. Active node was: '
             . $this->nodes[$this->activeNode]['http']['publish_address'], __CLASS__);
         $this->activeNode = null;
         if ($this->_curl) {
@@ -255,8 +256,9 @@ class Connection extends Component
     public function createCommand($config = [])
     {
         $this->open();
-        $config['db'] = $this;
-        $command = new Command($config);
+        //\yii\di\AbstractContainer::configure($this, $config);
+        //$config['db'] = $this;
+        $command = new Command($this, $config);
 
         return $command;
     }
@@ -491,7 +493,7 @@ class Connection extends Component
             $profile = false;
         }
 
-        Yii::trace("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
+        Yii::debug("Sending request to elasticsearch node: $method $url\n$requestBody", __METHOD__);
         if ($profile !== false) {
             Yii::beginProfile($profile, __METHOD__);
         }

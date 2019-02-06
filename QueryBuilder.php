@@ -34,7 +34,7 @@ class QueryBuilder extends BaseObject
     public function __construct($connection, $config = [])
     {
         $this->db = $connection;
-        parent::__construct($config);
+        \yii\di\AbstractContainer::configure($this, $config);
     }
 
     /**

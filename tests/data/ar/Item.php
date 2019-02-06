@@ -32,7 +32,7 @@ class Item extends ActiveRecord
         $command->setMapping(static::index(), static::type(), [
             static::type() => [
                 "properties" => [
-                    "name" =>        ["type" => "keyword", "index" => "not_analyzed", "store" => true],
+                    "name" =>        ["type" => "keyword", "index" => "false", "store" => true],
                     "category_id" =>      ["type" => "integer"],
                 ]
             ]

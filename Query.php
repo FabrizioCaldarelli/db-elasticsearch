@@ -7,7 +7,7 @@
 
 namespace yii\elasticsearch;
 
-use Yii;
+use yii\helpers\Yii;
 use yii\base\Component;
 use yii\base\InvalidParamException;
 use yii\db\QueryInterface;
@@ -191,9 +191,8 @@ class Query extends Component implements QueryInterface
     /**
      * @inheritdoc
      */
-    public function init()
+    public function __construct(array $config = [])
     {
-        parent::init();
         // setting the default limit according to elasticsearch defaults
         // http://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_parameters_5
         if ($this->limit === null) {
@@ -571,7 +570,7 @@ class Query extends Component implements QueryInterface
     public function each($scrollWindow = '1m', $db = null)
     {
         return Yii::createObject([
-            'class' => BatchQueryResult::className(),
+            '__class' => BatchQueryResult::className(),
             'query' => $this,
             'scrollWindow' => $scrollWindow,
             'db' => $db,
